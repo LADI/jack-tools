@@ -21,6 +21,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdbool.h>
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -56,26 +57,6 @@ static jackctl_internal_t * jackctl_server_get_internal(jackctl_server_t *server
 
     return NULL;
 }
-
-#ifdef __JACK1__
-static jackctl_parameter_t *
-jackctl_get_parameter(
-    const JSList * parameters_list,
-    const char * parameter_name)
-{
-    while (parameters_list)
-    {
-        if (strcmp(jackctl_parameter_get_name((jackctl_parameter_t *)parameters_list->data), parameter_name) == 0)
-        {
-            return (jackctl_parameter_t *)parameters_list->data;
-        }
-
-        parameters_list = jack_slist_next(parameters_list);
-    }
-
-    return NULL;
-}
-#endif
 
 static void print_value(union jackctl_parameter_value value, jackctl_param_type_t type)
 {
@@ -148,12 +129,7 @@ int main(int argc, char *argv[])
     const JSList * drivers;
     const JSList * internals;
     const JSList * node_ptr;
-#ifdef __JACK1__
-    sigset_t signals;
-#endif
-#ifdef __JACK2__
     jackctl_sigmask_t * sigmask;
-#endif
     int opt, option_index;
     const char* driver_name = "dummy";
     const char* client_name = "audioadapter";
@@ -228,15 +204,8 @@ int main(int argc, char *argv[])
         print_internal((jackctl_internal_t *)node_ptr->data);
         node_ptr = jack_slist_next(node_ptr);
     }
-#ifdef __JACK1__
-    signals = jackctl_setup_signals(0);
-
-    jackctl_server_start(server, jackctl_server_get_driver(server, driver_name));
-#endif
-#ifdef __JACK2__
     jackctl_server_open(server, jackctl_server_get_driver(server, driver_name));
     jackctl_server_start(server);
-#endif
 
     jackctl_server_load_internal(server, jackctl_server_get_internal(server, client_name));
     
@@ -257,15 +226,11 @@ int main(int argc, char *argv[])
     
     */
       
-#ifdef __JACK1__
-    jackctl_wait_signals(signals);
-#endif
-#ifdef __JACK2__
     sigmask = jackctl_setup_signals(0);
     jackctl_wait_signals(sigmask);
+    //jackctl_finish_signals(sigmask);
     jackctl_server_stop(server);
     jackctl_server_close(server);
-#endif
     jackctl_server_destroy(server);
     return 0;
 }
