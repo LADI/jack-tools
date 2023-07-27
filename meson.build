@@ -1,9 +1,9 @@
 project(
-  'jack-example-tools',
+  'ladi-jack-tools',
   ['c', 'cpp'],
   meson_version: '>=0.58.0',
   license: ['GPL2+'],
-  version: '4',
+  version: '2.23.0',
 )
 
 os = build_machine.system()
@@ -189,7 +189,7 @@ message('Build ZALSA internal clients: ' + build_zalsa.to_string())
 
 conf_data = configuration_data()
 conf_data.set('VERSION', meson.project_version())
-conf_data.set('DATE', '2022')
+conf_data.set('DATE', '2023')
 
 c_args_common = [
   '-D__PROJECT_VERSION__="@0@"'.format(conf_data.get('VERSION')),
