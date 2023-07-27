@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
       
     sigmask = jackctl_setup_signals(0);
     jackctl_wait_signals(sigmask);
-    //jackctl_finish_signals(sigmask);
+    jackctl_finish_signals(sigmask);
     jackctl_server_stop(server);
     jackctl_server_close(server);
     jackctl_server_destroy(server);
