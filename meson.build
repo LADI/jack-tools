@@ -119,6 +119,23 @@ has_jack2_internal_client = cc.compiles(
 )
 message('Provides jack2-style jack_internal_client_handle(): ' + has_jack2_internal_client.to_string())
 
+has_jack_uuid = cc.compiles(
+  '''
+  #include <jack/jack.h>
+  #include <jack/uuid.h>
+
+  int main (int argc, char *argv[]) {
+    jack_status_t status;
+    jack_client_t *client = jack_client_open("foo", JackNoStartServer, &status);
+    jack_port_t *port = jack_port_by_name (client, "test");
+    jack_uuid_t uuid = jack_port_uuid (port);
+  }
+  ''',
+  dependencies: [dep_jack],
+  include_directories: include_directories_common,
+)
+message('Provides usable jack/uuid.h: ' + has_jack_uuid.to_string())
+
 has_jackctl_server_create2 = cc.has_function('jackctl_server_create2',
   dependencies: [lib_jackserver],
   include_directories: include_directories_common,
@@ -172,7 +189,7 @@ endif
 
 build_zalsa = false
 if get_option('zalsa').enabled() or (
-  get_option('zalsa').auto() and dep_alsa.found() and lib_rt.found() and lib_zita_alsa_pcmi.found() and lib_zita_resampler.found()
+  get_option('zalsa').auto() and dep_alsa.found() and lib_rt.found() and lib_zita_alsa_pcmi.found() and lib_zita_resampler.found() and has_jack_uuid
 )
   build_zalsa = true
 endif

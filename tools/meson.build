@@ -199,5 +199,5 @@ exe_jack_wait = executable(
 )
 
 if build_zalsa
-#  subdir('zalsa')
+  subdir('zalsa')
 endif
