@@ -66,6 +66,6 @@ DESTDIR="/some/other/location" meson install -C build
 
 For LADI specific issues, submit issues or pull request to LADI project.
 For related discussions, you are invited to join
-link:https://libera.chat/[Libera.Chat] channel #ladi
+[Libera.Chat](https://libera.chat/) channel #ladi
 
 IMPORTANT: Do not submit LADI specific issues to jackaudio project.
