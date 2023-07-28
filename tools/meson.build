@@ -145,12 +145,14 @@ if build_jack_netsource
   )
 endif
 
-#exe_jack_property = executable(
-#  'jack_property',
-#  sources: ['property.c'],
-#  dependencies: [dep_jack],
-#  install: true
-#)
+if has_jack_uuid
+exe_jack_property = executable(
+  'jack_property',
+  sources: ['property.c'],
+  dependencies: [dep_jack],
+  install: true
+)
+endif
 
 exe_jack_samplerate = executable(
   'jack_samplerate',
