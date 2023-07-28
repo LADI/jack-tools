@@ -46,12 +46,12 @@ meson.add_install_script(
 )
 endif
 
-exe_jack_evmon = executable(
-  'jack_evmon',
-  sources: ['evmon.c'],
-  dependencies: [dep_jack],
-  install: true
-)
+#exe_jack_evmon = executable(
+#  'jack_evmon',
+#  sources: ['evmon.c'],
+#  dependencies: [dep_jack],
+#  install: true
+#)
 
 exe_jack_freewheel = executable(
   'jack_freewheel',
@@ -145,12 +145,12 @@ if build_jack_netsource
   )
 endif
 
-exe_jack_property = executable(
-  'jack_property',
-  sources: ['property.c'],
-  dependencies: [dep_jack],
-  install: true
-)
+#exe_jack_property = executable(
+#  'jack_property',
+#  sources: ['property.c'],
+#  dependencies: [dep_jack],
+#  install: true
+#)
 
 exe_jack_samplerate = executable(
   'jack_samplerate',
@@ -199,5 +199,5 @@ exe_jack_wait = executable(
 )
 
 if build_zalsa
-  subdir('zalsa')
+#  subdir('zalsa')
 endif

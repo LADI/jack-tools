@@ -69,10 +69,11 @@ lib_jacknet = declare_dependency(
   include_directories: include_directories_common,
 )
 
-jack_implementation = ''
 jack_implementation = dep_jack.get_variable('jack_implementation')
 if jack_implementation == ''
-  warning('No compatible jack implementation detected. This may mean conflicting files when installing!')
+  message('JACK implementation: unknown')
+else
+  message('JACK implementation: ' + jack_implementation)
 endif
 
 has_jack1_internal_client = cc.compiles(
