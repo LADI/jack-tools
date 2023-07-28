@@ -12,8 +12,8 @@ List of required and optional dependencies:
 
 * [alsa-lib](https://www.alsa-project.org/wiki/Main_Page) (required when
   building `alsa_in` and `alsa_out` or ZALSA internal clients)
-* [LADI/jack2](https://github.com/LADI/jack2) >= 2.23.0
-  [LADI/jack1](https://github.com/LADI/jack1) >= 1.121.0 (still has issues)
+* [LADI/jack2](https://github.com/LADI/jack2) >= 2.23.0 or
+  [LADI/jack1](https://github.com/LADI/jack1) >= 1.121.0
   Other versions may work but are not supported in LADI project are
   [jackaudio/jack2](https://github.com/jackaudio/jack2) >= 1.9.20, and
   [pipewire-jack](https://gitlab.freedesktop.org/pipewire/pipewire) >= 0.3.44
