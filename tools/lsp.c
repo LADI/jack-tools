@@ -24,8 +24,12 @@
 #include <inttypes.h>
 
 #include <jack/jack.h>
+#if HAVE_JACK_SESSION
 #include <jack/session.h>
+#endif
+#if HAVE_JACK_UUID
 #include <jack/uuid.h>
+#endif
 
 char * my_name;
 
@@ -35,6 +39,7 @@ show_version (void)
 	fprintf (stderr, "%s: JACK example tools version %s\n", my_name, __PROJECT_VERSION__);
 }
 
+#if HAVE_JACK_UUID
 static void
 printf_name2uuid (jack_client_t* client, const char* pname)
 {
@@ -51,6 +56,7 @@ printf_name2uuid (jack_client_t* client, const char* pname)
 	}
 	jack_free(uuid);
 }
+#endif
 
 static void
 show_usage (void)
@@ -68,8 +74,10 @@ show_usage (void)
 	fprintf (stderr, "        -p, --properties      Display port properties. Output may include:\n"
 			 "                              input|output, can-monitor, physical, terminal\n\n");
 	fprintf (stderr, "        -t, --type            Display port type\n");
+#if HAVE_JACK_UUID
 	fprintf (stderr, "        -u, --uuid            Display uuid instead of client name (if available)\n");
 	fprintf (stderr, "        -U, --port-uuid       Display port uuid\n");
+#endif
 	fprintf (stderr, "        -h, --help            Display this help message\n");
 	fprintf (stderr, "        --version             Output version information and exit\n\n");
 	fprintf (stderr, "For more information see http://jackaudio.org/\n");
@@ -105,8 +113,10 @@ main (int argc, char *argv[])
 		{ "total-latency", 0, 0, 'L' },
 		{ "properties", 0, 0, 'p' },
 		{ "type", 0, 0, 't' },
+#if HAVE_JACK_UUID
 		{ "uuid", 0, 0, 'u' },
 		{ "port-uuid", 0, 0, 'U' },
+#endif
 		{ "help", 0, 0, 'h' },
 		{ "version", 0, 0, 'v' },
 		{ 0, 0, 0, 0 }
@@ -192,20 +202,27 @@ main (int argc, char *argv[])
 		}
 		if (skip_port) continue;
 
-		if (show_uuid) {
+#if HAVE_JACK_UUID
+		if (show_uuid)
+		{
 			printf_name2uuid(client, ports[i]);
-		} else {
+		}
+		else
+#endif
+		{
 			printf ("%s\n", ports[i]);
 		}
 
 		jack_port_t *port = jack_port_by_name (client, ports[i]);
 
+#if HAVE_JACK_UUID
 		if (show_port_uuid) {
 			char buf[JACK_UUID_STRING_SIZE];
 			jack_uuid_t uuid = jack_port_uuid (port);
 			jack_uuid_unparse (uuid, buf);
 			printf ("	uuid: %s\n", buf);
 		}
+#endif
 
 		if (show_aliases) {
 			int cnt;
@@ -221,9 +238,14 @@ main (int argc, char *argv[])
 			if ((connections = jack_port_get_all_connections (client, jack_port_by_name(client, ports[i]))) != 0) {
 				for (j = 0; connections[j]; j++) {
 					printf("   ");
-					if (show_uuid) {
+#if HAVE_JACK_UUID
+					if (show_uuid)
+					{
 						printf_name2uuid(client, connections[j]);
-					} else {
+					}
+					else
+#endif
+					{
 						printf("%s\n", connections[j]);
 					}
 				}
