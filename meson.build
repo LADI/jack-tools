@@ -119,6 +119,19 @@ has_jack2_internal_client = cc.compiles(
 )
 message('Provides jack2-style jack_internal_client_handle(): ' + has_jack2_internal_client.to_string())
 
+has_jack_jslist = cc.compiles(
+  '''
+  #include <jack/jack.h>
+  #include <jack/jslist.h>
+
+  int main (int argc, char *argv[]) {
+  }
+  ''',
+  dependencies: [dep_jack],
+  include_directories: include_directories_common,
+)
+message('Provides usable jack/jslist.h: ' + has_jack_jslist.to_string())
+
 has_jack_uuid = cc.compiles(
   '''
   #include <jack/jack.h>
@@ -157,7 +170,7 @@ has_ppoll = cc.has_function('ppoll', prefix: '#define _GNU_SOURCE\n#include <sys
 
 build_alsa_in_out = false
 if get_option('alsa_in_out').enabled() or (
-  get_option('alsa_in_out').auto() and dep_alsa.found() and dep_samplerate.found()
+  get_option('alsa_in_out').auto() and dep_alsa.found() and dep_samplerate.found() and has_jack_jslist
 )
   build_alsa_in_out = true
 endif
@@ -168,7 +181,7 @@ if get_option('jack_net').enabled() or (get_option('jack_net').auto() and lib_ja
 endif
 
 build_jack_netsource = false
-if get_option('jack_netsource').enabled() or (get_option('jack_netsource').auto() and dep_samplerate.found())
+if get_option('jack_netsource').enabled() or (get_option('jack_netsource').auto() and dep_samplerate.found() and has_jack_jslist)
   build_jack_netsource = true
 endif
 
