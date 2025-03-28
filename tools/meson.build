@@ -1,3 +1,11 @@
+exe_jack_version = executable(
+  'jack_version',
+  c_args: c_args_common,
+  sources: ['version.c'],
+  dependencies: [dep_jack],
+  install: true
+)
+
 exe_jack_alias = executable(
   'jack_alias',
   c_args: c_args_common,
